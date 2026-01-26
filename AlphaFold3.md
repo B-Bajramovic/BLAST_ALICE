@@ -47,7 +47,7 @@ For this we use PyMOL to visualise the structure, and some of our self-made scri
 ## 5. Final remarks
 ---
 
-A single protein prediction is easy to do, but for larger jobs and complicated proteins please reach out to belmin bajramovic on slack for more help.
+A single protein prediction is easy to do, but for larger jobs and complicated proteins (or if you just dont know how to use any of this) please reach out to belmin bajramovic on slack for more help.
 
 For publication of data please consult [the AlphaFold3 publication](https://www.nature.com/articles/s41586-024-07487-w) and HPC alice wiki.
 
