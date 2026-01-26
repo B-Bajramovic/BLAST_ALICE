@@ -1,10 +1,11 @@
 # BLASTP usage patterns (local BLAST+, nr database)
 
 This guide shows common BLASTP use cases using ONLY built-in BLAST options.  
-All examples assume access to the local NCBI nr database.
 
-Database prefix used throughout:  
-`/zfsstore/databases/NCBI/nr/nr`
+Run this to ensure the database path is routed correctly internally
+
+export BLASTDB=/path/to/your/blast/databases
+
 
 ---
 
@@ -106,8 +107,6 @@ Combines region restriction with relaxed similarity thresholds.
 
 ## Summary of key options
 
-Goal                    Key options  
----------------------   ------------------------------------------  
 Broad annotation        default blastp vs nr  
 Taxonomy-restricted     -taxids  
 Region-specific         -query_loc  
