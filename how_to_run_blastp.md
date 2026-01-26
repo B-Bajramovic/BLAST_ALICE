@@ -6,14 +6,19 @@ This guide shows common BLASTP use cases using ONLY built-in BLAST options.
 
 ## Preparation before running BLAST
 
+Activate the BLAST module
+```
+module load BLAST+/2.16.0-gompi-2024a
+```
 run this to ensure the database path is correctly used 
 ```
 export BLASTDB=/zfsstore/databases/NCBI
 ```
-To make the database known permanently, add it to your bashrc:
+To automate this for every login, add it to your bashrc
 
 ```
 echo 'export BLASTDB=/zfsstore/databases/NCBI' >> ~/.bashrc
+echo 'module load BLAST+/2.16.0-gompi-2024a' >> ~/.bashrc
 source ~/.bashrc
 ```
 ---
