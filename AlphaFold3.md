@@ -16,6 +16,8 @@ python AF3_job_prepare.py --prey /path/to/directory/with/fasta/files --project n
 ```
 The full options of the script are a bit intimidating, but to begin you only need --prey, which refers to your fasta file, and --project, which is the directory into which your json file will go and your AlphaFold3 output later on. The --make-sbatch and --job-dirs options let the python script prepare the slurm job for you.
 
+The project folder will automatically write to /data1/$USER. If you want this changed to a custom location, please use the option --output-root /path/that/you/prefer
+
 ---
 ## 2. Submittig you slurm job
 ---
@@ -36,8 +38,9 @@ If you ran your job using the defaults in AF3_job_prepare.py, your project folde
 For this we use PyMOL to visualise the structure, and some of our self-made scripts for confidence assessment and contact analysis. 
 
 ---
-## 12. Final remarks
+## 5. Final remarks
 ---
+A single protein prediction is easy to do, but for larger jobs and complicated proteins please reach out to belmin bajramovic on slack for more help.
 
-- Please reach out to belmin bajramovic on slack for more help.
+For publication of data please consult [the AlphaFold3 publication](https://www.nature.com/articles/s41586-024-07487-w)
 
