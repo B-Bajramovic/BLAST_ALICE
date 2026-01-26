@@ -2,16 +2,20 @@
 
 This guide shows common BLASTP use cases using ONLY built-in BLAST options.  
 
-## Set up
-
 ---
 
-Run this to ensure the database path is routed correctly internally
+## Preparation before running BLAST
 
-export BLASTDB=/path/to/your/blast/databases
+run this to ensure the database path is correctly used 
+```
+export BLASTDB=/zfsstore/databases/NCBI
+```
+To make the database known permanently, add it to your bashrc:
 
----
-
+```
+echo 'export BLASTDB=/zfsstore/databases/NCBI' >> ~/.bashrc
+source ~/.bashrc
+```
 ---
 
 ## 1. Single protein vs entire nr database
