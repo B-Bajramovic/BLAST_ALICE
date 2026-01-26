@@ -1,6 +1,6 @@
-# BLASTP usage patterns (local BLAST+, nr database)
+# HPC ALICE BLASTP usage patterns
 
-This guide shows common BLASTP use cases using ONLY built-in BLAST options.  
+This guide shows common BLASTP use cases using built-in BLAST options.  
 
 ---
 
@@ -113,8 +113,8 @@ Combines region restriction with relaxed similarity thresholds.
 ## 6. Performance and scaling guidelines
 
 - Single protein: 1 job, 4–8 threads, <=15 minutes walltime
-- Multiple proteins: use job arrays (one BLAST per job)
-- BLASTP uses -num_threads (NOT Slurm --ntasks)
+- Multiple proteins: use job arrays (one query per job)
+- When setting cpus for your slurm job, make sure they are the same as number of threads used in blastp
 - Avoid running BLAST on login nodes
 
 ---
