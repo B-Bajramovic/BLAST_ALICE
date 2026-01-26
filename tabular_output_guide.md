@@ -1,9 +1,8 @@
 # BLAST Tabular Output Guide
-# blastp and other BLAST+ programs
-#
-# ------------------------------------------------------------------------------
-# 1. What is BLAST tabular output
-# ------------------------------------------------------------------------------
+
+---
+## 1. What is BLAST tabular output
+---
 
 BLAST supports **tabular output** via the `-outfmt` option.
 
@@ -17,9 +16,9 @@ Tabular output is designed for:
 - filtering and QC
 - large-scale homology searches
 
-# ------------------------------------------------------------------------------
-# 2. The classic 12-column BLAST table
-# ------------------------------------------------------------------------------
+---
+## 2. The classic 12-column BLAST table
+---
 
 These are the historical default columns returned by `-outfmt 6`
 when no custom field list is provided.
@@ -41,10 +40,9 @@ when no custom field list is provided.
 
 This set is **not exhaustive** and is rarely optimal on its own.
 
-# ------------------------------------------------------------------------------
-# 3. Custom tabular output (strongly recommended)
-# ------------------------------------------------------------------------------
-
+---
+## 3. Custom tabular output (strongly recommended)
+---
 You can explicitly choose which columns BLAST writes:
 
     -outfmt "6 qseqid sacc pident length qcovs evalue bitscore stitle"
@@ -54,11 +52,11 @@ Reasons to always do this:
 - stable column order
 - no silent BLAST version changes
 
-# ------------------------------------------------------------------------------
-# 4. Core blastp-specific fields
-# ------------------------------------------------------------------------------
+---
+## 4. Core blastp-specific fields
+---
 
-## Identifiers and annotation
+### Identifiers and annotation
 
 - `qseqid`   : query sequence ID
 - `sseqid`   : subject sequence ID
@@ -66,7 +64,7 @@ Reasons to always do this:
 - `saccver`  : subject accession.version
 - `stitle`   : subject description line
 
-## Alignment quality
+### Alignment quality
 
 - `pident`   : percent identity
 - `length`   : alignment length
@@ -75,19 +73,19 @@ Reasons to always do this:
 - `gaps`     : total gaps
 - `gapopen`  : gap openings
 
-## Coordinates
+### Coordinates
 
 - `qstart`, `qend`
 - `sstart`, `send`
 
-## Statistics
+### Statistics
 
 - `evalue`
 - `bitscore`
 
-# ------------------------------------------------------------------------------
-# 5. Coverage and length fields (very important)
-# ------------------------------------------------------------------------------
+---
+## 5. Coverage and length fields (very important)
+---
 
 Coverage fields are essential for filtering weak or spurious hits.
 
@@ -100,9 +98,9 @@ Example:
 
     -outfmt "6 qseqid sacc pident length qlen qcovs evalue bitscore"
 
-# ------------------------------------------------------------------------------
-# 6. Taxonomy-aware fields (nr database users)
-# ------------------------------------------------------------------------------
+---
+## 6. Taxonomy-aware fields (nr database users)
+---
 
 These fields are especially useful when searching the NCBI nr database.
 
@@ -115,9 +113,9 @@ Example:
 
     -outfmt "6 qseqid sacc pident length qcovs evalue bitscore ssciname staxids"
 
-# ------------------------------------------------------------------------------
-# 7. Sequence-including fields (use with caution)
-# ------------------------------------------------------------------------------
+---
+## 7. Sequence-including fields (use with caution)
+---
 
 These fields massively increase output size.
 
@@ -126,9 +124,9 @@ These fields massively increase output size.
 
 Only use when manual alignment inspection is required.
 
-# ------------------------------------------------------------------------------
-# 8. Fields mainly for nucleotide-based BLAST
-# ------------------------------------------------------------------------------
+---
+## 8. Fields mainly for nucleotide-based BLAST
+---
 
 Relevant for blastn, tblastn, blastx, tblastx:
 
@@ -138,29 +136,29 @@ Relevant for blastn, tblastn, blastx, tblastx:
 
 Usually irrelevant for blastp.
 
-# ------------------------------------------------------------------------------
-# 9. Recommended column sets
-# ------------------------------------------------------------------------------
+---
+## 9. Recommended column sets
+---
 
-## General blastp annotation
+### General blastp annotation
 
     -outfmt "6 qseqid sacc pident length qcovs evalue bitscore stitle"
 
-## Strict homology filtering
+### Strict homology filtering
 
     -outfmt "6 qseqid sacc pident length nident qlen qcovs evalue bitscore"
 
-## Taxonomy-aware screening
+### Taxonomy-aware screening
 
     -outfmt "6 qseqid sacc pident length qcovs evalue bitscore ssciname staxids"
 
-## Alignment inspection / debugging
+### Alignment inspection / debugging
 
     -outfmt "6 qseqid sacc qstart qend sstart send pident length qseq sseq"
 
-# ------------------------------------------------------------------------------
-# 10. Other BLAST programs (summary)
-# ------------------------------------------------------------------------------
+---
+## 10. Other BLAST programs (summary)
+---
 
 | Program  | Query type | Subject type | Notes |
 |---------|------------|--------------|-------|
@@ -173,9 +171,9 @@ Usually irrelevant for blastp.
 Most fields are shared, but frame/strand fields only apply to nucleotide
 or translated searches.
 
-# ------------------------------------------------------------------------------
-# 11. How to list all available fields locally
-# ------------------------------------------------------------------------------
+---
+## 11. How to list all available fields locally
+---
 
 Run:
 
@@ -184,9 +182,9 @@ Run:
 Search for the section titled **Custom output formats**.
 The exact field list may vary slightly between BLAST+ versions.
 
-# ------------------------------------------------------------------------------
-# 12. Final advice
-# ------------------------------------------------------------------------------
+---
+## 12. Final advice
+---
 
 - Always specify your `-outfmt` fields explicitly
 - Always include at least one coverage metric
