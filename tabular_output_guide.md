@@ -41,16 +41,11 @@ when no custom field list is provided.
 This set is **not exhaustive** and is rarely optimal on its own.
 
 ---
-## 3. Custom tabular output (strongly recommended)
+## 3. Custom tabular output (recommended)
 ---
 You can explicitly choose which columns BLAST writes:
 
     -outfmt "6 qseqid sacc pident length qcovs evalue bitscore stitle"
-
-Reasons to always do this:
-- reproducibility
-- stable column order
-- no silent BLAST version changes
 
 ---
 ## 4. Core blastp-specific fields
@@ -84,7 +79,7 @@ Reasons to always do this:
 - `bitscore`
 
 ---
-## 5. Coverage and length fields (very important)
+## 5. Coverage and length fields (important)
 ---
 
 Coverage fields are essential for filtering weak or spurious hits.
@@ -99,7 +94,7 @@ Example:
     -outfmt "6 qseqid sacc pident length qlen qcovs evalue bitscore"
 
 ---
-## 6. Taxonomy-aware fields (nr database users)
+## 6. Taxonomy-aware fields (nr database)
 ---
 
 These fields are especially useful when searching the NCBI nr database.
@@ -114,7 +109,7 @@ Example:
     -outfmt "6 qseqid sacc pident length qcovs evalue bitscore ssciname staxids"
 
 ---
-## 7. Sequence-including fields (use with caution)
+## 7. Sequence-including fields (can infalte output)
 ---
 
 These fields massively increase output size.
@@ -134,7 +129,7 @@ Relevant for blastn, tblastn, blastx, tblastx:
 - `sframe`  : subject frame
 - `sstrand` : subject strand
 
-Usually irrelevant for blastp.
+Irrelevant for blastp.
 
 ---
 ## 9. Recommended column sets
@@ -188,6 +183,6 @@ The exact field list may vary slightly between BLAST+ versions.
 
 - Always specify your `-outfmt` fields explicitly
 - Always include at least one coverage metric
-- Avoid sequence fields unless absolutely necessary
+- Avoid sequence fields unless necessary
 - Keep column order stable for downstream scripts
 
