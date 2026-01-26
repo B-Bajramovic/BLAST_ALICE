@@ -2,10 +2,15 @@
 
 This guide shows common BLASTP use cases using ONLY built-in BLAST options.  
 
+## Set up
+
+---
+
 Run this to ensure the database path is routed correctly internally
 
 export BLASTDB=/path/to/your/blast/databases
 
+---
 
 ---
 
