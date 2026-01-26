@@ -11,9 +11,10 @@ Requirements for the script are
 - Bio (python package, can be installed in conda using: conda install Bio -c bioconda)
 
 ```
-python AF3_input_preparation.py --prey /path/to/directory/containing/fastas --project project_name --
-```
+python AF3_input_preparation.py --prey /path/to/directory/with/fasta/files --project name_of_project --make-sbatch --job-dirs
 
+```
+The full options of the script are a bit intimidating, but to begin you only need --prey, which refers to your fasta file, and --project, which is the directory into which your json file will go and your AlphaFold3 output later on. The --make-sbatch and --job-dirs options let the python script prepare the slurm job for you.
 ---
 ## 2. Submittig you slurm job
 ---
