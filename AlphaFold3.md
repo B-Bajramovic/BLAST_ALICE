@@ -21,26 +21,33 @@ The project folder will automatically write to /data1/$USER. If you want this ch
 ---
 ## 2. Submittig you slurm job
 ---
+
 If you used the --make--sbatch option, your project directory should now contain a submit_all.sh. This is meant for submitting your AlphaFold job to SLURM
 
 ```
 cd /path/to/your/project/directory
 bash submit_all.sh
 ```
+
 If you wish to manually submit the sbatch or inspect it, the job_proteinname.sbatch should be under the project directory, inside the folder named by your fasta entry header.  
+
 ---
 ## 3. Understanding output
 ---
+
 If you ran your job using the defaults in AF3_job_prepare.py, your project folder should now contain structure and confidence output data in the subfolders. The best predicted structure is always named proteinname_model.cif, with the replicates under separate seed folders. Confidences are stored in JSON files and can be used for further analysis and visualisation.
+
 ---
 ## 4. Visualising output
 ---
+
 For this we use PyMOL to visualise the structure, and some of our self-made scripts for confidence assessment and contact analysis. 
 
 ---
 ## 5. Final remarks
 ---
+
 A single protein prediction is easy to do, but for larger jobs and complicated proteins please reach out to belmin bajramovic on slack for more help.
 
-For publication of data please consult [the AlphaFold3 publication](https://www.nature.com/articles/s41586-024-07487-w)
+For publication of data please consult [the AlphaFold3 publication](https://www.nature.com/articles/s41586-024-07487-w) and HPC alice wiki.
 
