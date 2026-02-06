@@ -34,7 +34,6 @@ def is_fasta_file(p: Path) -> bool:
 
 
 def sanitize_job_name(name: str) -> str:
-    # Slurm job names are happier with simple characters
     keep = []
     for ch in name:
         if ch.isalnum() or ch in ("_", ".", "+", "="):
@@ -50,12 +49,6 @@ def format_mem_gb(threads: int, mem_per_cpu_gb: int) -> int:
 
 
 def parse_extra_blast_args(raw: list[str]) -> list[str]:
-    """
-    Accept either repeated flags like:
-      --extra -qcov_hsp_perc 30 --extra -word_size 2
-    or a single quoted chunk:
-      --extra "-qcov_hsp_perc 30 -word_size 2"
-    """
     out: list[str] = []
     for item in raw:
         out.extend(shlex.split(item))
@@ -123,13 +116,9 @@ def write_sbatch(
     lines.append('echo "Start: $(date)"')
     lines.append('echo "Job: ${SLURM_JOB_NAME}  ID: ${SLURM_JOB_ID}"')
     lines.append("")
-    lines.append("# If your cluster uses environment modules, uncomment and adjust:")
-    lines.append("# module load BLAST+/2.14.1")
-    lines.append("")
-    lines.append("# NCBI BLAST may require BLASTDB or taxdb availability depending on setup.")
-    lines.append("# If needed, uncomment and adjust one of these patterns:")
-    lines.append("# export BLASTDB=/zfsstore/databases/NCBI/nr")
-    lines.append("# export BLASTDB=/zfsstore/databases/NCBI")
+    lines.append("# Load BLAST module and set database path (required)")
+    lines.append("module load BLAST+/2.14.1")
+    lines.append("export BLASTDB=/zfsstore/databases/NCBI/nr")
     lines.append("")
     lines.append(blast_cmd_str)
     lines.append("")
@@ -168,107 +157,23 @@ python make_blastp_sbatch.py /path/to/input_fastas --taxid 28211 --submit
 """
     )
 
-    ap.add_argument(
-        "inputdir",
-        type=Path,
-        help="Directory containing FASTA files (*.fa, *.faa, *.fasta, etc.)",
-    )
-    ap.add_argument(
-        "--taxid",
-        type=int,
-        default=28211,
-        help="NCBI taxid to restrict results (default: 28211). Use 0 to disable filtering.",
-    )
-    ap.add_argument(
-        "--db",
-        type=str,
-        default=DEFAULT_DB,
-        help=f"BLAST database prefix (default: {DEFAULT_DB})",
-    )
-    ap.add_argument(
-        "--partition",
-        type=str,
-        default="cpu-short",
-        help="Slurm partition (default: cpu-short)",
-    )
-    ap.add_argument(
-        "--time",
-        dest="time_limit",
-        type=str,
-        default="04:00:00",
-        help="Walltime limit (default: 04:00:00)",
-    )
-    ap.add_argument(
-        "--threads",
-        type=int,
-        default=32,
-        help="Threads for BLASTP and Slurm cpus per task (default: 32)",
-    )
-    ap.add_argument(
-        "--mem-per-cpu-gb",
-        type=int,
-        default=2,
-        help="Memory per cpu in GB; total mem is threads * this (default: 2)",
-    )
-    ap.add_argument(
-        "--evalue",
-        type=str,
-        default="1e-5",
-        help="BLASTP evalue (default: 1e-5)",
-    )
-    ap.add_argument(
-        "--max-target-seqs",
-        type=int,
-        default=20,
-        help="BLASTP max_target_seqs (default: 20)",
-    )
-    ap.add_argument(
-        "--outfmt",
-        type=str,
-        default=DEFAULT_OUTFMT,
-        help=f'BLAST outfmt string (default: "{DEFAULT_OUTFMT}")',
-    )
-    ap.add_argument(
-        "--outdir",
-        type=Path,
-        default=None,
-        help="Output directory for TSV and sbatch files (default: inputdir/blastp_out)",
-    )
-    ap.add_argument(
-        "--logs-dirname",
-        type=str,
-        default="logs",
-        help="Logs folder name inside outdir (default: logs)",
-    )
-    ap.add_argument(
-        "--sbatch-dirname",
-        type=str,
-        default="sbatch",
-        help="Sbatch folder name inside outdir (default: sbatch)",
-    )
-    ap.add_argument(
-        "--mail-user",
-        type=str,
-        default=None,
-        help="Email address for Slurm notifications (default: none)",
-    )
-    ap.add_argument(
-        "--mail-type",
-        type=str,
-        default="BEGIN,END,FAIL",
-        help="Slurm mail types if mail user is set (default: BEGIN,END,FAIL)",
-    )
-    ap.add_argument(
-        "--extra",
-        action="append",
-        default=[],
-        help='Extra BLAST arguments. Repeatable. Example: --extra "-qcov_hsp_perc 30" --extra "-word_size 2"',
-    )
-    ap.add_argument(
-        "--submit",
-        action="store_true",
-        help="If set, submit each generated sbatch file via sbatch",
-    )
+    ap.add_argument("inputdir", type=Path, help="Directory containing FASTA files")
+    ap.add_argument("--taxid", type=int, default=28211)
+    ap.add_argument("--db", type=str, default=DEFAULT_DB)
+    ap.add_argument("--partition", type=str, default="cpu-short")
+    ap.add_argument("--time", dest="time_limit", type=str, default="04:00:00")
+    ap.add_argument("--threads", type=int, default=32)
+    ap.add_argument("--mem-per-cpu-gb", type=int, default=2)
+    ap.add_argument("--evalue", type=str, default="1e-5")
+    ap.add_argument("--max-target-seqs", type=int, default=20)
+    ap.add_argument("--outfmt", type=str, default=DEFAULT_OUTFMT)
+    ap.add_argument("--outdir", type=Path, default=None)
+    ap.add_argument("--logs-dirname", type=str, default="logs")
+    ap.add_argument("--sbatch-dirname", type=str, default="sbatch")
+    ap.add_argument("--mail-user", type=str, default=None)
+    ap.add_argument("--mail-type", type=str, default="BEGIN,END,FAIL")
+    ap.add_argument("--extra", action="append", default=[])
+    ap.add_argument("--submit", action="store_true")
 
     return ap
 
@@ -279,29 +184,16 @@ def main() -> int:
 
     inputdir: Path = args.inputdir
     if not inputdir.exists() or not inputdir.is_dir():
-        print(f"ERROR: inputdir not found or not a directory: {inputdir}", file=sys.stderr)
+        print(f"ERROR: inputdir not found: {inputdir}", file=sys.stderr)
         return 2
 
     threads = int(args.threads)
-    if threads < 1:
-        print("ERROR: --threads must be >= 1", file=sys.stderr)
-        return 2
-
     mem_per_cpu_gb = int(args.mem_per_cpu_gb)
-    if mem_per_cpu_gb < 1:
-        print("ERROR: --mem-per-cpu-gb must be >= 1", file=sys.stderr)
-        return 2
 
     taxid_val = int(args.taxid)
-    if taxid_val == 0:
-        taxid: int | None = None
-    elif taxid_val < 0:
-        print("ERROR: --taxid must be positive, or 0 to disable filtering", file=sys.stderr)
-        return 2
-    else:
-        taxid = taxid_val
+    taxid = None if taxid_val == 0 else taxid_val
 
-    outdir: Path = args.outdir if args.outdir is not None else (inputdir / "blastp_out")
+    outdir: Path = args.outdir if args.outdir else (inputdir / "blastp_out")
     logs_dir = outdir / args.logs_dirname
     sbatch_dir = outdir / args.sbatch_dirname
     tsv_dir = outdir / "tsv"
@@ -314,8 +206,7 @@ def main() -> int:
 
     fasta_files = sorted([p for p in inputdir.iterdir() if is_fasta_file(p)])
     if not fasta_files:
-        print(f"ERROR: no FASTA files found in {inputdir}", file=sys.stderr)
-        print(f"Recognized suffixes: {', '.join(sorted(FASTA_SUFFIXES))}", file=sys.stderr)
+        print("ERROR: no FASTA files found", file=sys.stderr)
         return 2
 
     mem_gb = format_mem_gb(threads, mem_per_cpu_gb)
